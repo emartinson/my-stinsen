@@ -2,6 +2,21 @@ import Foundation
 import SwiftUI
 import Combine
 
+public struct SmartNavigationView<Content: View>: View{
+    @ViewBuilder var content: () -> Content
+
+    public var body: some View {
+        if #available(iOS 16, *) {
+            SwiftUI.NavigationStack(root: content)
+                .background(Color.clear)
+        } else {
+            SwiftUI.NavigationView(content: content)
+                .navigationViewStyle(.stack)
+                .background(Color.clear)
+        }
+    }
+}
+
 public protocol NavigationCoordinatable: Coordinatable {
     typealias Route = NavigationRoute
     typealias Root = NavigationRoute

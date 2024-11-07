@@ -27,7 +27,7 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                         #if os(macOS)
                         self.presented = Presented(
                             view: AnyView(
-                                NavigationView(
+                                SmartNavigationView(
                                     content: {
                                         view
                                     }
@@ -38,12 +38,13 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                         #else
                         self.presented = Presented(
                             view: AnyView(
-                                NavigationView(
+                                SmartNavigationView(
                                     content: {
                                         view.navigationBarHidden(true)
                                     }
                                 )
-                                .navigationViewStyle(StackNavigationViewStyle())
+//                                .navigationViewStyle(.stack)
+//                                .navigationViewStyle(StackNavigationViewStyle())
                             ),
                             type: .modal
                         )
@@ -76,7 +77,7 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                             #if os(macOS)
                             self.presented = Presented(
                                 view: AnyView(
-                                    NavigationView(
+                                    SmartNavigationView(
                                         content: {
                                             view
                                         }
@@ -87,16 +88,18 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                             #else
                             self.presented = Presented(
                                 view: AnyView(
-                                    NavigationView(
+                                    SmartNavigationView(
                                         content: {
                                             #if os(macOS)
                                             view
                                             #else
                                             view.navigationBarHidden(true)
+                                                .background(Color.clear)
                                             #endif
                                         }
                                     )
                                     .navigationViewStyle(StackNavigationViewStyle())
+                                    .background(Color.clear)
                                 ),
                                 type: .fullScreen
                             )
@@ -105,6 +108,7 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                             self.presented = Presented(
                                 view: AnyView(
                                     presentable.view()
+                                        .background(Color.clear)
                                 ),
                                 type: .fullScreen
                             )

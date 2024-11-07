@@ -2,13 +2,36 @@ import Foundation
 import SwiftUI
 import Combine
 
+struct ClearBackgroundView: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIView {
+        return InnerView()
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+    }
+
+    private class InnerView: UIView {
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+
+            superview?.superview?.backgroundColor = .clear
+            DispatchQueue.main.async {
+                self.superview?.superview?.backgroundColor = .clear
+            }
+        }
+    }
+}
+
 struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
     var coordinator: T
     private let id: Int
     private let router: NavigationRouter<T>
     @ObservedObject var presentationHelper: PresentationHelper<T>
     @ObservedObject var root: NavigationRoot
-    
+
+    @State var fade: CGFloat = 0.0
+    @State var isPresentedInternal = false
+
     var start: AnyView?
 
     var body: some View {
@@ -31,19 +54,35 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
                         }), onDismiss: {
                             self.coordinator.stack.dismissalAction[id]?()
                             self.coordinator.stack.dismissalAction[id] = nil
-                        }, content: { () -> AnyView in
-                            return { () -> AnyView in
-                                if let view = presentationHelper.presented?.view {
-                                    return AnyView(view)
-                                } else {
-                                    return AnyView(EmptyView())
-                                }
-                            }()
+                        }, content: {
+                            if let view = presentationHelper.presented?.view {
+                                view
+                                    .background(ClearBackgroundView())
+                                    .transition(.opacity)
+                                    .opacity(fade)
+                                    .scaleEffect(fade)
+                                    .onAppear {
+                                        fade = 1
+                                    }
+                                    .onDisappear {
+                                        fade = 0
+                                    }
+                            } else {
+                                EmptyView()
+                            }
+                        })
+                        .transaction({ transaction in
+                            // disable the default FullScreenCover animation
+//                            transaction.disablesAnimations = true
+
+                            // add custom animation for presenting and dismissing the FullScreenCover
+                            transaction.animation = .easeInOut(duration: 0.1) //.linear(duration: 0.1)
                         })
                         .environmentObject(router)
                 )
         } else {
             commonView
+                .background(ClearBackgroundView())
                 .environmentObject(router)
         }
         #endif
