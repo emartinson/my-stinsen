@@ -69,52 +69,83 @@ final class PresentationHelper<T: NavigationCoordinatable>: ObservableObject {
                             type: .push
                         )
                     }
-                case.fullScreen:
-                    if #available(iOS 14, tvOS 14, watchOS 7, *) {
-                        if presentable is AnyView {
-                            let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
-
-                            #if os(macOS)
-                            self.presented = Presented(
-                                view: AnyView(
-                                    SmartNavigationView(
-                                        content: {
-                                            view
-                                        }
-                                    )
-                                ),
-                                type: .fullScreen
-                            )
-                            #else
-                            self.presented = Presented(
-                                view: AnyView(
-                                    SmartNavigationView(
-                                        content: {
-                                            #if os(macOS)
-                                            view
-                                            #else
-                                            view.navigationBarHidden(true)
-                                                .background(Color.clear)
-                                            #endif
-                                        }
-                                    )
-                                    .navigationViewStyle(StackNavigationViewStyle())
-                                    .background(Color.clear)
-                                ),
-                                type: .fullScreen
-                            )
-                            #endif
-                        } else {
-                            self.presented = Presented(
-                                view: AnyView(
-                                    presentable.view()
-                                        .background(Color.clear)
-                                ),
-                                type: .fullScreen
-                            )
-                        }
+                case let .sheet(detents, dismissable, interactive):
+                    if presentable is AnyView {
+                        let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
+                        
+                        #if os(macOS)
+                        self.presented = Presented(
+                            view: AnyView(
+                                SmartNavigationView(
+                                    content: {
+                                        view
+                                    }
+                                )
+                            ),
+                            type: .sheet(detents: detents, dismissable: dismissable, interactive: interactive)
+                        )
+                        #else
+                        self.presented = Presented(
+                            view: AnyView(
+                                SmartNavigationView(
+                                    content: {
+                                        view.navigationBarHidden(true)
+                                    }
+                                )
+                                //                                .navigationViewStyle(.stack)
+                                //                                .navigationViewStyle(StackNavigationViewStyle())
+                            ),
+                            type: .sheet(detents: detents, dismissable: dismissable, interactive: interactive)
+                        )
+                        #endif
                     } else {
-                        fatalError()
+                        self.presented = Presented(
+                            view: presentable.view(),
+                            type: .modal
+                        )
+                    }
+                case.fullScreen:
+                    if presentable is AnyView {
+                        let view = AnyView(NavigationCoordinatableView(id: nextId, coordinator: coordinator))
+
+                        #if os(macOS)
+                        self.presented = Presented(
+                            view: AnyView(
+                                SmartNavigationView(
+                                    content: {
+                                        view
+                                    }
+                                )
+                            ),
+                            type: .fullScreen
+                        )
+                        #else
+                        self.presented = Presented(
+                            view: AnyView(
+                                SmartNavigationView(
+                                    content: {
+                                        #if os(macOS)
+                                        view
+                                        #else
+                                        view.navigationBarHidden(true)
+                                            .background(Color.clear)
+                                        #endif
+                                    }
+                                )
+                                .navigationViewStyle(StackNavigationViewStyle())
+                                .background(Color.clear)
+                            ),
+                            type: .fullScreen
+                        )
+                        #endif
+                    } else {
+                        self.presented = Presented(
+                            view: AnyView(
+                                presentable.view()
+                                    .background(Color.clear)
+                            ),
+                            type: .fullScreen
+                        )
                     }
                 }
             }

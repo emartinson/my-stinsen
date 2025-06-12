@@ -1,6 +1,7 @@
 import SwiftUI
 
-struct Presented {
+struct Presented: Identifiable {
+    let id = UUID()
     var view: AnyView
     var type: PresentationType
 }

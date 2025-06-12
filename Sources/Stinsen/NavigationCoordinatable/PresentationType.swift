@@ -4,34 +4,63 @@ import SwiftUI
 public enum PresentationType {
     case modal
     case push
-    @available(iOS 14, tvOS 14, watchOS 7, *)
     case fullScreen
+    case sheet(detents: [PresentationDetentWrapper] = [], dismissable: Bool = true, interactive: Bool = true)
     
     var isModal: Bool {
         switch self {
-        case .modal:
-            return true
-        default:
-            return false
+        case .modal: true
+        default: false
+        }
+    }
+    
+    var isSheet: Bool {
+        switch self {
+        case .sheet: true
+        default: false
         }
     }
     
     var isPush: Bool {
         switch self {
-        case .push:
-            return true
+        case .push: true
+        default: false
+        }
+    }
+
+    var isFullScreen: Bool {
+        switch self {
+        case .fullScreen: true
+        default: false
+        }
+    }
+}
+
+extension PresentationType {
+    var detents: [PresentationDetentWrapper] {
+        switch self {
+        case .sheet(detents: let detents, dismissable: _, interactive: _):
+            return detents
         default:
-            return false
+            return []
         }
     }
     
-    @available(iOS 14, tvOS 14, watchOS 7, *)
-    var isFullScreen: Bool {
+    var dismissable: Bool {
         switch self {
-        case .fullScreen:
-            return true
+        case .sheet(detents: _, dismissable: let dismissable, interactive: _):
+            return dismissable
         default:
-            return false
+            return true
+        }
+    }
+    
+    var interactive: Bool {
+        switch self {
+        case .sheet(detents: _, dismissable: _, interactive: let interactive):
+            return interactive
+        default:
+            return true
         }
     }
 }

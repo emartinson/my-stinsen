@@ -39,52 +39,46 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
         commonView
             .environmentObject(router)
         #else
-        if #available(iOS 14.0, watchOS 7.0, tvOS 14.0, *) {
-            commonView
-                .environmentObject(router)
-                .background(
-                    // WORKAROUND for iOS < 14.5
-                    // A bug hinders us from using modal and fullScreenCover on the same view
-                    Color
-                        .clear
-                        .fullScreenCover(isPresented: Binding<Bool>.init(get: { () -> Bool in
-                            return presentationHelper.presented?.type.isFullScreen == true
-                        }, set: { _ in
-                            self.coordinator.appear(self.id)
-                        }), onDismiss: {
-                            self.coordinator.stack.dismissalAction[id]?()
-                            self.coordinator.stack.dismissalAction[id] = nil
-                        }, content: {
-                            if let view = presentationHelper.presented?.view {
-                                view
-                                    .background(ClearBackgroundView())
-                                    .transition(.opacity)
-                                    .opacity(fade)
-                                    .scaleEffect(fade)
-                                    .onAppear {
-                                        fade = 1
-                                    }
-                                    .onDisappear {
-                                        fade = 0
-                                    }
-                            } else {
-                                EmptyView()
-                            }
-                        })
-                        .transaction({ transaction in
-                            // disable the default FullScreenCover animation
+        commonView
+            .environmentObject(router)
+            .background(
+                // WORKAROUND for iOS < 14.5
+                // A bug hinders us from using modal and fullScreenCover on the same view
+                Color
+                    .clear
+                    .fullScreenCover(isPresented: Binding<Bool>.init(get: { () -> Bool in
+                        return presentationHelper.presented?.type.isFullScreen == true
+                    }, set: { _ in
+                        self.coordinator.appear(self.id)
+                    }), onDismiss: {
+                        self.coordinator.stack.dismissalAction[id]?()
+                        self.coordinator.stack.dismissalAction[id] = nil
+                    }, content: {
+                        if let view = presentationHelper.presented?.view {
+                            view
+                                .background(ClearBackgroundView())
+                                .transition(.opacity)
+                                .opacity(fade)
+                                .scaleEffect(fade)
+                                .onAppear {
+                                    fade = 1
+                                }
+                                .onDisappear {
+                                    fade = 0
+                                }
+                        } else {
+                            EmptyView()
+                        }
+                    })
+                    .transaction({ transaction in
+                        // disable the default FullScreenCover animation
 //                            transaction.disablesAnimations = true
 
-                            // add custom animation for presenting and dismissing the FullScreenCover
-                            transaction.animation = .easeInOut(duration: 0.1) //.linear(duration: 0.1)
-                        })
-                        .environmentObject(router)
-                )
-        } else {
-            commonView
-                .background(ClearBackgroundView())
-                .environmentObject(router)
-        }
+                        // add custom animation for presenting and dismissing the FullScreenCover
+                        transaction.animation = .easeInOut(duration: 0.1) //.linear(duration: 0.1)
+                    })
+                    .environmentObject(router)
+            )
         #endif
     }
     
@@ -114,6 +108,21 @@ struct NavigationCoordinatableView<T: NavigationCoordinatable>: View {
                 )
                 .hidden()
             )
+            .showPartialSheet(item: Binding(get: {
+                presentationHelper.presented
+            }, set: { value in
+                self.coordinator.appear(self.id)
+            }),
+              detents: presentationHelper.presented?.type.detents ?? [],
+              dismissable: presentationHelper.presented?.type.dismissable ?? true,
+              interaction: presentationHelper.presented?.type.interactive ?? true
+            ) { _ in
+                if let view = presentationHelper.presented?.view {
+                    AnyView(view)
+                } else {
+                    AnyView(EmptyView())
+                }
+            }
             .sheet(isPresented: Binding<Bool>.init(get: { () -> Bool in
                 return presentationHelper.presented?.type.isModal == true
             }, set: { _ in

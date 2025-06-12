@@ -20,7 +20,7 @@ public extension TabRouter where T: TabCoordinatable {
      - Parameter route: The route that will be focused.
      */
     @discardableResult func focusFirst<Output: Coordinatable>(
-        _ route: KeyPath<T, Content<T, Output>>
+        _ route: KeyPath<T, TabContent<T, Output>>
     ) -> Output {
         self.coordinator.focusFirst(route)
     }
@@ -31,7 +31,7 @@ public extension TabRouter where T: TabCoordinatable {
      - Parameter route: The route that will be focused.
      */
     @discardableResult func focusFirst<Output: View>(
-        _ route: KeyPath<T, Content<T, Output>>
+        _ route: KeyPath<T, TabContent<T, Output>>
     ) -> T {
         self.coordinator.focusFirst(route)
     }

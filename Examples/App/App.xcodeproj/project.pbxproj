@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5234FD5F2DF6C8A800AEE5FE /* Stinsen in Frameworks */ = {isa = PBXBuildFile; productRef = 5234FD5E2DF6C8A800AEE5FE /* Stinsen */; };
 		EB24976426C9192200A4C2D4 /* Stinsen in Frameworks */ = {isa = PBXBuildFile; productRef = EB24976326C9192200A4C2D4 /* Stinsen */; };
 		EB24976626C9192800A4C2D4 /* Stinsen in Frameworks */ = {isa = PBXBuildFile; productRef = EB24976526C9192800A4C2D4 /* Stinsen */; };
 		EB24976A26C9193500A4C2D4 /* Stinsen in Frameworks */ = {isa = PBXBuildFile; productRef = EB24976926C9193500A4C2D4 /* Stinsen */; };
@@ -283,7 +284,6 @@
 		EB42847A272AA20100911C54 /* ForgotPasswordService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordService.swift; sourceTree = "<group>"; };
 		EB42847B272AA20100911C54 /* LoginService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		EB42847C272AA20100911C54 /* UnauthenticatedServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnauthenticatedServices.swift; sourceTree = "<group>"; };
-		EB5247BD28BBD30D002E3838 /* Stinsen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Stinsen; path = ../..; sourceTree = "<group>"; };
 		EB6B0F5E25DB03F60011E826 /* StinsenApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StinsenApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB9E366725E4DC1200C4E25C /* StinsenApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StinsenApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB9E366A25E4DC1200C4E25C /* StinsenApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StinsenApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -328,6 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB24976C26C9194700A4C2D4 /* Stinsen in Frameworks */,
+				5234FD5F2DF6C8A800AEE5FE /* Stinsen in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -609,7 +610,6 @@
 		EB5247BC28BBD30D002E3838 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				EB5247BD28BBD30D002E3838 /* Stinsen */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -753,6 +753,7 @@
 			name = "StinsenApp (iOS)";
 			packageProductDependencies = (
 				EB24976B26C9194700A4C2D4 /* Stinsen */,
+				5234FD5E2DF6C8A800AEE5FE /* Stinsen */,
 			);
 			productName = "Coordinate (iOS)";
 			productReference = EBC24EF025AC630300F455F3 /* StinsenApp.app */;
@@ -819,6 +820,7 @@
 			);
 			mainGroup = EBC24EE325AC62FF00F455F3;
 			packageReferences = (
+				5234FD5D2DF6C8A800AEE5FE /* XCLocalSwiftPackageReference "../../../my-stinsen" */,
 			);
 			productRefGroup = EBC24EF125AC630300F455F3 /* Products */;
 			projectDirPath = "";
@@ -1383,7 +1385,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1404,7 +1406,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1536,7 +1538,18 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		5234FD5D2DF6C8A800AEE5FE /* XCLocalSwiftPackageReference "../../../my-stinsen" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../../my-stinsen";
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		5234FD5E2DF6C8A800AEE5FE /* Stinsen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Stinsen;
+		};
 		EB24976326C9192200A4C2D4 /* Stinsen */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Stinsen;

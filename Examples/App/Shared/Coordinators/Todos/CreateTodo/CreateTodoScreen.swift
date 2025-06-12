@@ -16,6 +16,8 @@ struct CreateTodoScreen: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.blue)
+        .edgesIgnoringSafeArea(.bottom)
     }
     
     init(todosStore: TodosStore) {
