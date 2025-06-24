@@ -7,7 +7,7 @@ protocol Outputable {
     func onTapped(_ isRepeat: Bool, coordinator: Any)
 }
 
-public class Content<T: TabCoordinatable, Output: ViewPresentable>: Outputable {
+public class TabContent<T: TabCoordinatable, Output: ViewPresentable>: Outputable {
     
     func tabItem(active: Bool, coordinator: Any) -> AnyView {
         return self.tabItem(coordinator as! T)(active)
@@ -47,9 +47,9 @@ public class Content<T: TabCoordinatable, Output: ViewPresentable>: Outputable {
 }
 
 @propertyWrapper public class TabRoute<T: TabCoordinatable, Output: ViewPresentable> {
-    public var wrappedValue: Content<T, Output>
+    public var wrappedValue: TabContent<T, Output>
     
-    fileprivate init(standard: Content<T, Output>) {
+    fileprivate init(standard: TabContent<T, Output>) {
         self.wrappedValue = standard
     }
 }
@@ -60,7 +60,7 @@ extension TabRoute where T: TabCoordinatable, Output == AnyView {
         tabItem: @escaping ((T) -> ((Bool) -> TabItem))
     ) {
         self.init(
-            standard: Content(
+            standard: TabContent(
                 closure: { coordinator in { AnyView(wrappedValue(coordinator)()) }},
                 tabItem: tabItem,
                 onTapped: { _ in { _, _ in }}
@@ -73,7 +73,7 @@ extension TabRoute where T: TabCoordinatable, Output == AnyView {
         tabItem: @escaping ((T) -> ((Bool) -> TabItem)),
         onTapped: @escaping ((T) -> ((Bool, Output) -> Void))
     ) {
-        self.init(standard: Content(
+        self.init(standard: TabContent(
             closure: { coordinator in { AnyView(wrappedValue(coordinator)()) }},
             tabItem: tabItem,
             onTapped: onTapped))
@@ -86,7 +86,7 @@ extension TabRoute where T: TabCoordinatable, Output: Coordinatable {
         tabItem: @escaping ((T) -> ((Bool) -> TabItem))
     ) {
         self.init(
-            standard: Content(
+            standard: TabContent(
                 closure: { coordinator in { wrappedValue(coordinator)() }},
                 tabItem: tabItem,
                 onTapped: { _ in { _, _ in }}
@@ -99,7 +99,7 @@ extension TabRoute where T: TabCoordinatable, Output: Coordinatable {
         tabItem: @escaping ((T) -> ((Bool) -> TabItem)),
         onTapped: @escaping ((T) -> ((Bool, Output) -> Void))
     ) {
-        self.init(standard: Content(
+        self.init(standard: TabContent(
             closure: { coordinator in { wrappedValue(coordinator)() }},
             tabItem: tabItem,
             onTapped: onTapped))

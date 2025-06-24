@@ -28,7 +28,7 @@ public protocol TabCoordinatable: Coordinatable {
      - Parameter route: The route that will be focused.
      */
     @discardableResult func focusFirst<Output: Coordinatable>(
-        _ route: KeyPath<Self, Content<Self, Output>>
+        _ route: KeyPath<Self, TabContent<Self, Output>>
     ) -> Output
     
     /**
@@ -37,7 +37,7 @@ public protocol TabCoordinatable: Coordinatable {
      - Parameter route: The route that will be focused.
      */
     @discardableResult func focusFirst<Output: View>(
-        _ route: KeyPath<Self, Content<Self, Output>>
+        _ route: KeyPath<Self, TabContent<Self, Output>>
     ) -> Self
 }
 
@@ -104,7 +104,7 @@ public extension TabCoordinatable {
     }
     
     @discardableResult func focusFirst<Output: Coordinatable>(
-        _ route: KeyPath<Self, Content<Self, Output>>
+        _ route: KeyPath<Self, TabContent<Self, Output>>
     ) -> Output {
         if child.allItems == nil {
             setupAllTabs()
@@ -126,7 +126,7 @@ public extension TabCoordinatable {
     }
     
     @discardableResult func focusFirst<Output: View>(
-        _ route: KeyPath<Self, Content<Self, Output>>
+        _ route: KeyPath<Self, TabContent<Self, Output>>
     ) -> Self {
         if child.allItems == nil {
             setupAllTabs()
